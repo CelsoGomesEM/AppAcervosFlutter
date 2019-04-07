@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pocflutterapp/screens/minhaspublicacoes_screen.dart';
-import 'package:pocflutterapp/screens/pagina_principal.dart';
 import 'package:pocflutterapp/screens/publicacoes_screen.dart';
 import 'package:pocflutterapp/widgets/drawer_customizado.dart';
 
