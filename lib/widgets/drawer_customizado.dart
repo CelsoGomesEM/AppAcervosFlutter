@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pocflutterapp/models/sessao_usuario_model.dart';
+import 'package:pocflutterapp/screens/login_screen.dart';
 import 'package:pocflutterapp/widgets/menus_drawer.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class DrawerCustomizado extends StatelessWidget {
 
@@ -33,25 +36,32 @@ class DrawerCustomizado extends StatelessWidget {
                     Positioned(
                       left: 0.0,
                       bottom: 0.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Olá, Fulano", style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold
-                          ),),
-                          GestureDetector(
-                            child: Text("Entre ou Cadastre-se > ", style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                            ),),
-                            onTap: (){
-
-                            },
-                          )
-                        ],
-                      ),
+                      child: ScopedModelDescendant<SessaoUsuarioModel>(
+                          builder: (context, child, model){
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Olá, ${model.discenteLogado.nome}", style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                                GestureDetector(
+                                  child: Text("Logout > ", style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                  ),),
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => LoginScreen())
+                                    );
+                                    model.deslogar();
+                                  },
+                                )
+                              ],
+                            );
+                          }
+                      )
                     )
                   ],
                 ),

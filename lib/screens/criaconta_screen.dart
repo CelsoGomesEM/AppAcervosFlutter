@@ -1,88 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:pocflutterapp/models/sessao_usuario_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class CriaContaScreen extends StatelessWidget {
+class CriaContaScreen extends StatefulWidget {
+  @override
+  _CriaContaScreenState createState() => _CriaContaScreenState();
+}
+
+class _CriaContaScreenState extends State<CriaContaScreen> {
 
   final _formKey = GlobalKey<FormState>();
+  final _scafoldKey = GlobalKey<ScaffoldState>();
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-          title: Text("Criar Conta"),
-          centerTitle: true,
-        ),
-        body: Form(
-          key: _formKey,
-          child: ListView(
-            padding: EdgeInsets.all(15.0),
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Nome completo"
-                ),
-                keyboardType: TextInputType.text,
-                maxLength: 50,
-                validator: (text){
-                  if(text.isEmpty){
-                    return "Nome inválido!";
-                  }
-                  return null;
-                },
+      key: _scafoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+        title: Text("Criar Conta"),
+        centerTitle: true,
+      ),
+      body: ScopedModelDescendant<SessaoUsuarioModel>(
+        builder: (context, child, model){
+
+          if(model.estaCarregando){
+            return Center(
+              child: CircularProgressIndicator(
+
               ),
-              SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                    hintText: "E-mail"
-                ),
-                keyboardType: TextInputType.text,
-                maxLength: 50,
-                validator: (text){
-                  if(text.isEmpty){
-                    return "E-mail inválido!";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                    hintText: "Senha"
-                ),
-                obscureText: true,
-                keyboardType: TextInputType.text,
-                maxLength: 10,
-                validator: (text){
-                  if(text.isEmpty){
-                    return "Senha inválida!";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              SizedBox(
-                height: 45.0,
-                child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    child: Text("Criar", style:
-                      TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0
-                      ),),
+            );
+          }
+
+          return Form(
+            key: _formKey,
+            child: ListView(
+                padding: EdgeInsets.all(15.0),
+                children: <Widget>[
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'E-mail'
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  TextFormField(
+                    controller: _senhaController,
+                    decoration: InputDecoration(
+                      hintText: 'Senha'
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  RaisedButton(
+                    child: Text("Criar",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                     onPressed: (){
+                      if(_formKey.currentState.validate()){
 
-                    }),
-              )
-            ],
-          ),
+                        var email = _emailController.text;
+                        var senha = _senhaController.text;
+
+                        model.registrarUsuario(email, senha, _onSucess, _onFail);
+                      }
+                    },
+                  )
+                ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _onSucess(){
+    _scafoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(
+          "Usuário criado com sucesso!",
         ),
+          backgroundColor: Colors.lightBlue,
+          duration: Duration(seconds: 5),
+        )
+    );
+    Future.delayed(Duration(seconds: 5)).then((_){
+      Navigator.of(context).pop();
+    });
+  }
 
+  void _onFail(){
+    _scafoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(
+          "Falha ao criar usuário!",
+        ),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 5),
+        )
     );
   }
 }
