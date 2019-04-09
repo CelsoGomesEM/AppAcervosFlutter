@@ -169,10 +169,14 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text(
           "Entrando",
         ),
-          backgroundColor: Colors.redAccent,
-          duration: Duration(seconds: 10),
+          backgroundColor: Colors.lightBlue,
+          duration: Duration(seconds: 5),
         )
     );
+    Future.delayed(Duration(seconds: 3)).then((_){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomeScreen()));
+    });
   }
 
   void _onFail(){

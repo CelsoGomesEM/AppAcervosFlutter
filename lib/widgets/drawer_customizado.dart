@@ -41,7 +41,7 @@ class DrawerCustomizado extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Olá, ${model.discenteLogado.nome}", style: TextStyle(
+                                Text("Olá, ${model.estaLogado() ? model.discenteLogado.nome : ''}", style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold
                                 ),),
@@ -52,10 +52,10 @@ class DrawerCustomizado extends StatelessWidget {
                                       color: Colors.white
                                   ),),
                                   onTap: (){
+                                    model.deslogar();
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => LoginScreen())
                                     );
-                                    model.deslogar();
                                   },
                                 )
                               ],

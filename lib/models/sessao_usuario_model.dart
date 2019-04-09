@@ -48,6 +48,4 @@ class SessaoUsuarioModel extends Model{
     discenteLogado = null;
     notifyListeners();
   }
-
-
 }
