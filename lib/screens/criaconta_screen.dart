@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocflutterapp/models/discente_model.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -13,6 +14,7 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
   final _scafoldKey = GlobalKey<ScaffoldState>();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
+  final _nomeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +46,37 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                     decoration: InputDecoration(
                       hintText: 'E-mail'
                     ),
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Informe o E-mail";
+                    },
                   ),
                   SizedBox(
                     height: 16.0,
                   ),
                   TextFormField(
                     controller: _senhaController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Senha'
                     ),
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Informe a senha!";
+                    },
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  TextFormField(
+                    controller: _nomeController,
+                    decoration: InputDecoration(
+                      hintText: 'Nome Completo'
+                    ),
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Informe o nome!";
+                    },
                   ),
                   SizedBox(
                     height: 20.0,
@@ -67,10 +91,13 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                     onPressed: (){
                       if(_formKey.currentState.validate()){
 
-                        var email = _emailController.text;
-                        var senha = _senhaController.text;
+                        DiscenteModel discente = new DiscenteModel(
+                          email: _emailController.text,
+                          senha: _senhaController.text,
+                          nome: _nomeController.text
+                        );
 
-                        model.registrarUsuario(email, senha, _onSucess, _onFail);
+                        model.registrarUsuario(discente, _onSucess, _onFail);
                       }
                     },
                   )
@@ -91,7 +118,7 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
           duration: Duration(seconds: 5),
         )
     );
-    Future.delayed(Duration(seconds: 5)).then((_){
+    Future.delayed(Duration(seconds: 3)).then((_){
       Navigator.of(context).pop();
     });
   }

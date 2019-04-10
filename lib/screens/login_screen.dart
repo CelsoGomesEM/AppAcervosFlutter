@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocflutterapp/models/discente_model.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:pocflutterapp/screens/criaconta_screen.dart';
 import 'package:pocflutterapp/screens/home_screen.dart';
@@ -104,10 +105,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   if(_formKey.currentState.validate()){
 
-                                    var email = _emailController.text;
-                                    var senha = _senhaController.text;
+                                    var discenteModel = new DiscenteModel(
+                                        email: _emailController.text,
+                                        senha: _senhaController.text
+                                    );
 
-                                    model.realizarLogin(email, senha, _onSucess, _onFail);
+                                    model.realizarLogin(discenteModel, _onSucess, _onFail);
 
                                   }
                                 },

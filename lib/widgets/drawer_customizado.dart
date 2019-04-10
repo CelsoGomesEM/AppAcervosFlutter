@@ -7,7 +7,6 @@ import 'package:scoped_model/scoped_model.dart';
 class DrawerCustomizado extends StatelessWidget {
 
   final PageController _pageController;
-
   DrawerCustomizado(this._pageController);
 
   @override
@@ -41,7 +40,7 @@ class DrawerCustomizado extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Olá, ${model.estaLogado() ? model.discenteLogado.nome : ''}", style: TextStyle(
+                                Text("Olá, ${model.estaLogado() ? model.discenteLogado.email : ''}", style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold
                                 ),),
