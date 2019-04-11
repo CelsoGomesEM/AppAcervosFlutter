@@ -104,14 +104,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text("Entrar"),
                                 onPressed: () {
                                   if(_formKey.currentState.validate()){
-
-                                    var discenteModel = new DiscenteModel(
-                                        email: _emailController.text,
-                                        senha: _senhaController.text
-                                    );
-
-                                    model.realizarLogin(discenteModel, _onSucess, _onFail);
-
+                                    Map<String, dynamic> usuarioDados = {
+                                      "senha" : _senhaController.text,
+                                      "email" : _emailController.text
+                                    };
+                                    model.realizarLogin(usuarioDados, _onSucess, _onFail);
                                   }
                                 },
                               ),
@@ -188,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Falha no Login",
         ),
           backgroundColor: Colors.redAccent,
-          duration: Duration(seconds: 3),
+          duration: Duration(seconds: 5),
         )
     );
   }

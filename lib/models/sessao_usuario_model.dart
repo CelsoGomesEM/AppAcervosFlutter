@@ -8,17 +8,16 @@ class SessaoUsuarioModel extends Model{
 
   bool estaCarregando = false;
   DiscenteModel discenteLogado;
-  String tokenDiscenteLogado;
+  Map<String, dynamic> usuarioDados;
 
-
-  void registrarUsuario(DiscenteModel discente, VoidCallback onSucess, VoidCallback onFail) async{
+  void registrarUsuario(Map<String, dynamic> usuarioDados, VoidCallback onSucess, VoidCallback onFail) async{
 
     estaCarregando =  true;
     notifyListeners();
 
     try{
 
-      var token = await LoginService().registreUsuario(discente);
+      var retorno = await LoginService().registreUsuario(usuarioDados);
       onSucess();
       estaCarregando = false;
       notifyListeners();
@@ -32,16 +31,14 @@ class SessaoUsuarioModel extends Model{
     }
   }
 
-  void realizarLogin(DiscenteModel discente, VoidCallback onSucess, VoidCallback onFail) async{
+  void realizarLogin(Map<String, dynamic> usuarioDados, VoidCallback onSucess, VoidCallback onFail) async{
 
     estaCarregando =  true;
     notifyListeners();
 
     try{
 
-      var token = await LoginService().realizeLogin(discente);
-      tokenDiscenteLogado = token;
-      discenteLogado = discente;
+      discenteLogado = await LoginService().realizeLogin(usuarioDados);
       onSucess();
       estaCarregando = false;
       notifyListeners();

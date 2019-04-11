@@ -40,7 +40,7 @@ class DrawerCustomizado extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Olá, ${model.estaLogado() ? model.discenteLogado.email : ''}", style: TextStyle(
+                                Text("Olá, ${model.estaLogado() ? model.discenteLogado.nome : ''}", style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold
                                 ),),

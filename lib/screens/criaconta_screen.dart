@@ -48,7 +48,7 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                     ),
                     validator: (texto){
                       if(texto.isEmpty)
-                        return "Informe o E-mail";
+                        return "E-mail inválido!";
                     },
                   ),
                   SizedBox(
@@ -57,12 +57,13 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                   TextFormField(
                     controller: _senhaController,
                     obscureText: true,
+                    maxLength: 8,
                     decoration: InputDecoration(
                       hintText: 'Senha'
                     ),
                     validator: (texto){
                       if(texto.isEmpty)
-                        return "Informe a senha!";
+                        return "Senha inválida!";
                     },
                   ),
                   SizedBox(
@@ -70,12 +71,13 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                   ),
                   TextFormField(
                     controller: _nomeController,
+                    maxLength: 24,
                     decoration: InputDecoration(
                       hintText: 'Nome Completo'
                     ),
                     validator: (texto){
                       if(texto.isEmpty)
-                        return "Informe o nome!";
+                        return "Nome inválido!";
                     },
                   ),
                   SizedBox(
@@ -90,14 +92,12 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                     ),
                     onPressed: (){
                       if(_formKey.currentState.validate()){
-
-                        DiscenteModel discente = new DiscenteModel(
-                          email: _emailController.text,
-                          senha: _senhaController.text,
-                          nome: _nomeController.text
-                        );
-
-                        model.registrarUsuario(discente, _onSucess, _onFail);
+                        Map<String, dynamic> usuarioDados = {
+                          "nome" : _nomeController.text,
+                          "senha" : _senhaController.text,
+                          "email" : _emailController.text
+                        };
+                        model.registrarUsuario(usuarioDados, _onSucess, _onFail);
                       }
                     },
                   )

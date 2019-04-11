@@ -2,10 +2,20 @@ import 'package:meta/meta.dart';
 
 class DiscenteModel {
 
+  final int id;
   final String nome;
   final String email;
-  final String senha;
 
-  DiscenteModel({@required this.nome, @required this.email, @required this.senha});
+  DiscenteModel({@required this.id, @required this.nome, @required this.email});
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
 
 }
