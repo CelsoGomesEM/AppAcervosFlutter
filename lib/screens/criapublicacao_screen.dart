@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CriaPublicacao extends StatefulWidget {
   @override
@@ -8,6 +13,42 @@ class CriaPublicacao extends StatefulWidget {
 class _CriaPublicacaoState extends State<CriaPublicacao> {
 
   final _formKey = GlobalKey<FormState>();
+
+  String _filePath;
+
+  void verifiqueOqueTemDentroDoArquivo() async{
+
+    try{
+
+      File arquivo = new File(_filePath);
+
+      var contents = await arquivo.readAsBytes();
+
+      print(contents);
+
+    }on PlatformException catch(e){
+      print("Error while reading file: " + e.toString());
+    }
+  }
+
+  void getFilePath() async {
+    try {
+      String filePath = await FilePicker.getFilePath(type: FileType.ANY);
+
+      if (filePath == '') {
+        return;
+      }
+
+      print("File path: " + filePath);
+
+      setState((){
+        this._filePath = filePath;
+      });
+
+    } on PlatformException catch (e) {
+      print("Error while picking the file: " + e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,47 +148,57 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                   Container(
                     width: 150,
                     child: RaisedButton(
-                      onPressed: (){
-
-                      },
-                      child: Text("Upload"),
+                      onPressed: getFilePath,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Upload",
+                            style: TextStyle(
+                              fontSize: 14.0
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          _filePath == null ? Icon(Icons.file_upload, size: 30,) : Icon(Icons.check, size: 30, color: Colors.green,),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 10.0,
                   ),
                   Text(
-                    "Tipos arquivos: PDF",
+                    "Extensões: .Pdf",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold
                     ),
                   ),
                 ],
-              )
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0.0, 90.0, 0, 0),
+                width: 358,
+                height: 50,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.lightBlue,
+                  child: Text("Salvar",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold
+                    ),),
+                  shape: RoundedRectangleBorder(),
+                  onPressed: verifiqueOqueTemDentroDoArquivo,
+                  tooltip: "Salvar",
+
+                ),
+
+              ),
             ],
           ),
       ),
-      floatingActionButton: Container(
-        width: 358,
-        height: 50,
-        child: FloatingActionButton(
-            backgroundColor: Colors.lightBlue,
-            child: Text("Salvar",
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold
-            ),),
-            shape: RoundedRectangleBorder(),
-            onPressed: (){
-
-            },
-            tooltip: "Salvar",
-
-            ),
-
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
