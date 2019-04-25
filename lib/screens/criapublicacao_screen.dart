@@ -33,7 +33,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
 
   void getFilePath() async {
     try {
-      String filePath = await FilePicker.getFilePath(type: FileType.ANY);
+      String filePath = await FilePicker.getFilePath(type: FileType.CUSTOM, fileExtension: 'pdf');
 
       if (filePath == '') {
         return;
