@@ -21,8 +21,13 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
     try{
 
       File arquivo = new File(_filePath);
-
       var contents = await arquivo.readAsBytes();
+      var localTemporario = await getExternalStorageDirectory();
+      final myImagePath = '${localTemporario.path}/AcervosPublicacoes' ;
+      final myImgDir = await new Directory(myImagePath).create();
+      File file = await new File('${myImgDir.path}/documentoTeste.pdf').create();
+      file.writeAsBytes(contents);
+      var listOfFiles = await myImgDir.list(recursive: true).toList();
 
       print(contents);
 
@@ -194,7 +199,6 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                   tooltip: "Salvar",
 
                 ),
-
               ),
             ],
           ),

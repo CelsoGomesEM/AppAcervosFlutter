@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "485722408057",
+    "firebase_url": "https://acervostcc.firebaseio.com",
+    "project_id": "acervostcc",
+    "storage_bucket": "acervostcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485722408057:android:4af0607fc947aae2",
+        "android_client_info": {
+          "package_name": "com.example.pocflutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485722408057-6f2eb1113i9o8cl9dmpum20v6ilp3bse.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3y5CUC0_riCsWCRtjmiWwKyg4qv-yT1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485722408057-6f2eb1113i9o8cl9dmpum20v6ilp3bse.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
