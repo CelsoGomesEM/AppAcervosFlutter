@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
             centerTitle: true,
           ),
           drawer: DrawerCustomizado(_pageController),
-          body: PublicacoesScreen(),
+          body: PublicacaoScreen(),
         ),
         Scaffold(
           appBar: AppBar(

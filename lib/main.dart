@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:pocflutterapp/screens/login_screen.dart';
+import 'package:pocflutterapp/widgets/item_publicacao.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() {
