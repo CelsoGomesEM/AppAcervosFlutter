@@ -19,7 +19,7 @@ class ItemPublicacao extends StatelessWidget {
         child: Card(
           child: Container(
             padding: EdgeInsets.all(8.0),
-            height: 200.0,
+            height: 230.0,
             color: Color.fromRGBO(104, 222, 202, 1),
             child: Row(
               children: <Widget>[
@@ -42,6 +42,16 @@ class ItemPublicacao extends StatelessWidget {
                               color: Colors.grey,
                               fontSize: 12.0),
                         ),
+                         SizedBox(
+                           height: 5.0,
+                         ),
+                         Text("Por: ${publicacao.autores}",
+                           maxLines: 2,
+                           style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0
+                           ),
+                         ),
                          Container(
                               margin: new EdgeInsets.only(top: 5.0),
                               child: new Text(publicacao.resumo,maxLines: publicacao.resumo.length,),

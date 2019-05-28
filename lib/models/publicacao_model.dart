@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:meta/meta.dart';
 import 'dart:convert' as convert;
 
@@ -27,6 +29,8 @@ class PublicacaoModel {
   String titulo;
   String subtitulo;
   String resumo;
+  String autores;
+  Uint8List documento;
 
   PublicacaoModel({@required this.id, @required this.titulo, @required this.subtitulo});
 
@@ -35,9 +39,22 @@ class PublicacaoModel {
     titulo = json['titulo'];
     subtitulo = json['subtitulo'];
     resumo = json['resumo'];
+    autores = json['autores'];
+    //documento = json['documento'].cast<int>().toList();
   }
 
-  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['titulo'] = this.titulo;
+    data['subtitulo'] = this.subtitulo;
+    data['resumo'] = this.resumo;
+    data['autores'] = this.autores;
+    data['documento'] = this.documento;
+    return data;
+  }
+
+
+@override
   String toString() {
     // TODO: implement toString
     return "${this.titulo.toUpperCase()}";

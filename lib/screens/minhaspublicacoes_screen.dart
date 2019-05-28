@@ -3,7 +3,6 @@ import 'package:pocflutterapp/models/discente_model.dart';
 import 'package:pocflutterapp/models/publicacao_model.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:pocflutterapp/screens/criapublicacao_screen.dart';
-import 'package:pocflutterapp/services/api_service.dart';
 import 'package:pocflutterapp/services/publicacao_service.dart';
 import 'dart:async';
 
@@ -83,7 +82,9 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
   Future<List<PublicacaoModel>>_obtenhaPublicacoesDoUsuario(DiscenteModel discenteLogado) async {
     var servicoPublicacoesApi = new PublicacaoService();
 
-    return await servicoPublicacoesApi.obtenhaPublicacoesDoUsuario(discenteLogado.id);
+    var resultado = await servicoPublicacoesApi.obtenhaPublicacoesDoUsuario(discenteLogado.id);
+
+    return resultado.isEmpty ? null : resultado;
   }
 
   Widget _CreateListViewBuilder(BuildContext context, AsyncSnapshot snapshot){

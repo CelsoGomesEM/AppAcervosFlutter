@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pocflutterapp/models/publicacao_model.dart';
+import 'package:pocflutterapp/services/api_service.dart';
+import 'package:pocflutterapp/services/publicacao_service.dart';
 
 class CriaPublicacao extends StatefulWidget {
   @override
@@ -20,7 +24,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
 
     try{
 
-      File arquivo = new File(_filePath);
+      /*File arquivo = new File(_filePath);
       var contents = await arquivo.readAsBytes();
       var localTemporario = await getExternalStorageDirectory();
       final myImagePath = '${localTemporario.path}/AcervosPublicacoes' ;
@@ -29,7 +33,22 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
       file.writeAsBytes(contents);
       var listOfFiles = await myImgDir.list(recursive: true).toList();
 
-      print(contents);
+      print(contents);*/
+
+      File arquivo = new File(_filePath);
+
+      var arquivoEmBytes = await arquivo.readAsBytes();
+
+      var publicacao =  new PublicacaoModel();
+      publicacao.titulo = "celso";
+      publicacao.subtitulo = "teste";
+      publicacao.resumo = "bla bla";
+      publicacao.autores = "ssss";
+      publicacao.documento = arquivoEmBytes;
+
+      var teste = await ApiService().post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", publicacao.toJson());
+
+      var teste2 = "";
 
     }on PlatformException catch(e){
       print("Error while reading file: " + e.toString());

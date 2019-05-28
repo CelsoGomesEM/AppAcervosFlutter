@@ -20,6 +20,24 @@ class PublicacaoService {
     var map = json.decode(result);
     var resultado = ResultadoDoGet.fromJson(map);
     return resultado.results;
+  }
 
+  Future<void> registrePublicacao(PublicacaoModel publicacao) async {
+
+    var api = ApiService();
+
+    var result = await api.post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", publicacao.toJson());
+
+    /*var map = json.decode(result);
+
+    if (map['codigo'] == 0) {
+      return DiscenteModel(
+          id: map['result']['id'] as int,
+          nome: map['result']['nome'] as String,
+          email: map['result']['email'] as String
+      );
+    }
+
+    throw Exception(map['Mensagem']);*/
   }
 }
