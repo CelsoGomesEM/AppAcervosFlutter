@@ -15,8 +15,11 @@ class PublicacaoService {
 
   Future<List<PublicacaoModel>> obtenhaPublicacoesDoUsuario(int idUsuario) async {
 
-    List<PublicacaoModel> listaDePublicacoes = new List<PublicacaoModel>();
+    var api = new ApiService();
+    var result = await api.get("https://repositorioapi.herokuapp.com/api/publicacao/obtenhapublicacoespeloid?idUsuario=${idUsuario}");
+    var map = json.decode(result);
+    var resultado = ResultadoDoGet.fromJson(map);
+    return resultado.results;
 
-    return listaDePublicacoes;
   }
 }

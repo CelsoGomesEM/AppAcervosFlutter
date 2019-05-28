@@ -33,17 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   ),
                 );
+              var assetsImage = new AssetImage('assets/logo2.jpg');
+              var image = new Image(image: assetsImage, width: 250, height: 220,);
 
               return Container(
                 width: double.infinity,
+                color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Flexible(
-                      child: FlutterLogo(
-                        size: 250,
-                      ),
+                      child: image,
+                      fit: FlexFit.loose,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(

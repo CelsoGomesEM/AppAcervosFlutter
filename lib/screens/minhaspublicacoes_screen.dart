@@ -60,7 +60,7 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
                         child: Text("Erro:${snapshot.error}"),
                       );
                     }
-                    else if(!snapshot.hasData){
+                    else if(snapshot.hasData){
                       return _CreateListViewBuilder(context, snapshot);
                     }
                     else{
@@ -83,11 +83,7 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
   Future<List<PublicacaoModel>>_obtenhaPublicacoesDoUsuario(DiscenteModel discenteLogado) async {
     var servicoPublicacoesApi = new PublicacaoService();
 
-    List<PublicacaoModel> publicacoesDoUsuario = await servicoPublicacoesApi.obtenhaPublicacoesDoUsuario(discenteLogado.id);
-
-    await new Future.delayed(new Duration(seconds: 5));
-
-    return publicacoesDoUsuario;
+    return await servicoPublicacoesApi.obtenhaPublicacoesDoUsuario(discenteLogado.id);
   }
 
   Widget _CreateListViewBuilder(BuildContext context, AsyncSnapshot snapshot){

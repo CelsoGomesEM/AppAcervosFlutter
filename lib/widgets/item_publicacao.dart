@@ -19,12 +19,37 @@ class ItemPublicacao extends StatelessWidget {
         child: Card(
           child: Container(
             padding: EdgeInsets.all(8.0),
-            height: 120.0,
+            height: 200.0,
+            color: Color.fromRGBO(104, 222, 202, 1),
             child: Row(
               children: <Widget>[
-                Text(publicacao.titulo, textAlign: TextAlign.end, style: TextStyle(
-                  fontSize: 25
-                ),)
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.all(2.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                              publicacao.titulo,
+                              maxLines: 2,
+                              style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0
+                              ),
+                        ),
+                        Text(publicacao.subtitulo,
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12.0),
+                        ),
+                         Container(
+                              margin: new EdgeInsets.only(top: 5.0),
+                              child: new Text(publicacao.resumo,maxLines: publicacao.resumo.length,),
+                         ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           )
