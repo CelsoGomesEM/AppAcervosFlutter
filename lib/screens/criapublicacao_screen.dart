@@ -17,7 +17,11 @@ class CriaPublicacao extends StatefulWidget {
 class _CriaPublicacaoState extends State<CriaPublicacao> {
 
   final _formKey = GlobalKey<FormState>();
-
+  final _scafoldKey = GlobalKey<ScaffoldState>();
+  final _tituloController = TextEditingController();
+  final _subtituloController = TextEditingController();
+  final _palavrasChaveController = TextEditingController();
+  final _resumoController = TextEditingController();
   String _filePath;
 
   void verifiqueOqueTemDentroDoArquivo() async{
@@ -35,20 +39,26 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
 
       print(contents);*/
 
-      File arquivo = new File(_filePath);
+      /*File arquivo = new File(_filePath);
 
       var arquivoEmBytes = await arquivo.readAsBytes();
 
       var publicacao =  new PublicacaoModel();
-      publicacao.titulo = "celso";
-      publicacao.subtitulo = "teste";
-      publicacao.resumo = "bla bla";
-      publicacao.autores = "ssss";
+      publicacao.titulo = "Calendario 2018 Fitness";
+      publicacao.subtitulo = "Fitness";
+      publicacao.resumo = "Calendario 2018 Atividades Físicas";
+      publicacao.autores = "Luana Silva";
       publicacao.documento = arquivoEmBytes;
+      publicacao.palavrachave = "Fit";
+      publicacao.discenteid = 23;
 
-      var teste = await ApiService().post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", publicacao.toJson());
+      var body = json.encode(publicacao);
 
-      var teste2 = "";
+      var teste = await ApiService().post("http://192.168.1.7/RepositorioAcervosAPI/api/publicacao/registrarpublicacao", body);
+
+      var teste2 = "";*/
+
+      print("Cheguei Aqui");
 
     }on PlatformException catch(e){
       print("Error while reading file: " + e.toString());
@@ -81,57 +91,60 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
         title: Text("Publicação"),
         centerTitle: true,
       ),
+      key: _scafoldKey,
       body: Form(
           key: _formKey,
           child: ListView(
             padding: EdgeInsets.all(15.0),
             children: <Widget>[
               TextFormField(
+                controller: _tituloController,
                 decoration: InputDecoration(
                     hintText: 'Título',
                 ),
+                maxLength: 250,
                 validator: (texto){
                   if(texto.isEmpty)
-                    return "E-mail inválido!";
+                    return "Título inválido!";
                 },
-
               ),
               SizedBox(
-                height: 16.0,
+                height: 2.0,
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Subtítulo',
                 ),
+                maxLength: 250,
                 validator: (texto){
                   if(texto.isEmpty)
-                    return "E-mail inválido!";
+                    return "Subtítulo inválido!";
                 },
-
               ),
               SizedBox(
-                height: 16.0,
+                height: 2.0,
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Palavras-chave',
                 ),
+                maxLength: 250,
                 validator: (texto){
                   if(texto.isEmpty)
-                    return "E-mail inválido!";
+                    return "Palavras-chave inválido!";
                 },
-
               ),
               SizedBox(
-                height: 16.0,
+                height: 2.0,
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Autores',
                 ),
+                maxLength: 250,
                 validator: (texto){
                   if(texto.isEmpty)
-                    return "E-mail inválido!";
+                    return "Autores inválido!";
                 },
               ),
               SizedBox(
@@ -142,6 +155,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                 style: TextStyle(
                 fontSize: 15,
                 ),
+                maxLines: 10,
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 7, 0, 0),
@@ -150,7 +164,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                 child: TextField(
                   maxLines: 50,
                   decoration: InputDecoration(
-                    hintText: "Comente",
+                    hintText: "Descreva um breve resumo da publicação",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -203,7 +217,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(0.0, 90.0, 0, 0),
+                margin: EdgeInsets.fromLTRB(0.0, 50.0, 0, 0),
                 width: 358,
                 height: 50,
                 child: FloatingActionButton(
@@ -214,14 +228,76 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                         fontWeight: FontWeight.bold
                     ),),
                   shape: RoundedRectangleBorder(),
-                  onPressed: verifiqueOqueTemDentroDoArquivo,
+                  onPressed: () async {
+                      var resultadoDialog = await _ExibaDialogoDeConfirmacao(context);
+                      if(resultadoDialog){
+                        realizePublicacao();
+                        resultadoDialog = await _ExibaDialogConfirmado(context);
+                        if(resultadoDialog){
+                          //Limpe campos de input e pronto
+                          Navigator.pop(context);
+                        }
+                      }
+                  },
                   tooltip: "Salvar",
-
                 ),
               ),
             ],
           ),
       ),
     );
+  }
+
+  Future _ExibaDialogoDeConfirmacao(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmação"),
+          content: Text(
+            "Deseja salvar publicação?",
+          ),
+          actions: [
+            FlatButton(
+              child: Text("NÃO"),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            FlatButton(
+              child: Text("SIM"),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _ExibaDialogConfirmado(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            "Publicação realizada com sucesso!",
+          ),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void realizePublicacao() {
+
   }
 }

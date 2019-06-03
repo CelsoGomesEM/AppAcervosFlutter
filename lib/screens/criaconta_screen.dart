@@ -31,11 +31,9 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
           if(model.estaCarregando){
             return Center(
               child: CircularProgressIndicator(
-
               ),
             );
           }
-
           return Form(
             key: _formKey,
             child: ListView(

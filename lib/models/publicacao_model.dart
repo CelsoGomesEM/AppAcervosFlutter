@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'dart:convert' as convert;
 
 class ResultadoDoGet {
-
   List<PublicacaoModel> results;
   int codigo;
   String mensagem;
@@ -30,7 +29,10 @@ class PublicacaoModel {
   String subtitulo;
   String resumo;
   String autores;
+  String palavrachave;
   Uint8List documento;
+  int discenteid;
+
 
   PublicacaoModel({@required this.id, @required this.titulo, @required this.subtitulo});
 
@@ -50,6 +52,8 @@ class PublicacaoModel {
     data['resumo'] = this.resumo;
     data['autores'] = this.autores;
     data['documento'] = this.documento;
+    data['palavrachave'] = this.palavrachave;
+    data['discenteid'] = this.discenteid;
     return data;
   }
 
