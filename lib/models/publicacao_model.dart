@@ -18,7 +18,7 @@ class PublicacaoModel extends Model{
 
     try{
 
-      var retorno = await PublicacaoService().registrePublicacao(publicacao);
+      //var retorno = await PublicacaoService().registrePublicacao(publicacao);
       onSucess();
       notifyListeners();
 

@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:pocflutterapp/dominio/publicacao.dart';
 import 'package:pocflutterapp/services/api_service.dart';
+import 'dart:async';
+
 
 class PublicacaoService {
 
@@ -22,13 +25,33 @@ class PublicacaoService {
     return resultado.results;
   }
 
-  Future<void> registrePublicacao(Publicacao publicacao) async {
+  void registrePublicacao(Map<String, dynamic> dadosPublicacao, VoidCallback onSucess, VoidCallback onFail) async{
 
-    var api = ApiService();
+    try{
 
-    var result = await api.post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", publicacao.toJson());
+      var body = mapeieDadosPublicacao(dadosPublicacao);
+      var api = ApiService();
+      await api.post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", body);
 
+      onSucess();
+    }catch(erro){
+      Future.delayed(Duration(seconds: 5)).then((_){
+        onFail();
+      });
+    }
   }
 
+  String mapeieDadosPublicacao(Map<String, dynamic> dadosPublicacao){
+
+    var publicacao = new Publicacao();
+    publicacao.titulo = dadosPublicacao['titulo'];
+    publicacao.subtitulo = dadosPublicacao['subtitulo'];
+    publicacao.palavrachave = dadosPublicacao['palavrachave'];
+    publicacao.autores = dadosPublicacao['autores'];
+    publicacao.resumo = dadosPublicacao['resumo'];
+    publicacao.documento = dadosPublicacao['documento'];
+    publicacao.discenteid = dadosPublicacao['discenteid'];
+    return json.encode(publicacao);
+  }
 
 }

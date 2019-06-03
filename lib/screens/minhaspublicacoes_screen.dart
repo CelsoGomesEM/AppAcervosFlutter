@@ -24,18 +24,22 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
     return Scaffold(
       key: _scafoldKey,
       body: _futureBuilder,
-      floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => CriaPublicacao()
-                )
-            );
-          },
-          tooltip: "Adicione",
-          child: Icon(Icons.add),
-          ),
-
+      floatingActionButton: Container(
+        child: ScopedModelDescendant<SessaoUsuarioModel>(builder: (context, child, model){
+         return FloatingActionButton(
+           tooltip: "Adicione",
+           child: Icon(Icons.add),
+           onPressed: (){
+             Navigator.of(context).push(
+                 MaterialPageRoute(
+                     builder: (context) => CriaPublicacao(model.discenteLogado)
+                 )
+             );
+           },
+         );
+        },
+        ),
+      ),
     );
   }
 

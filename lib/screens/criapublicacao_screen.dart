@@ -1,18 +1,31 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pocflutterapp/models/publicacao_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:pocflutterapp/dominio/discente.dart';
+import 'package:pocflutterapp/services/publicacao_service.dart';
+import 'package:meta/meta.dart';
 
 class CriaPublicacao extends StatefulWidget {
+
+  Discente DiscenteLogado;
+
+  CriaPublicacao(Discente discenteLogado){
+   this.DiscenteLogado = discenteLogado;
+  }
+
   @override
-  _CriaPublicacaoState createState() => _CriaPublicacaoState();
+  _CriaPublicacaoState createState() => _CriaPublicacaoState(DiscenteLogado);
 }
 
 class _CriaPublicacaoState extends State<CriaPublicacao> {
+
+  Discente DiscenteLogado;
+
+  _CriaPublicacaoState(Discente discenteLogado){
+    this.DiscenteLogado = discenteLogado;
+  }
 
   final _formKey = GlobalKey<FormState>();
   final _scafoldKey = GlobalKey<ScaffoldState>();
@@ -229,8 +242,9 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                             "autores": _autoresController.text,
                             "resumo" : _resumoController.text,
                             "documento": obtenhaBytesDoArquivoPdfSelecionado(),
+                            "discenteid": DiscenteLogado.id,
                           };
-                          //model.registrarPublicacao(dadosDaPublicacao, _onSucess, _onFail);
+                          PublicacaoService().registrePublicacao(dadosDaPublicacao, _onSucess,  _onFail);
                         }
                         if(resultadoDialog){
                           resultadoDialog = await _ExibaDialogConfirmado(context);
