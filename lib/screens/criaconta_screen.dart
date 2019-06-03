@@ -25,58 +25,74 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
         title: Text("Criar Conta"),
         centerTitle: true,
       ),
-      body: Form(
+      body: ScopedModelDescendant<SessaoUsuarioModel>(
+        builder: (context, child, model){
+
+          if(model.estaCarregando){
+            return Center(
+              child: CircularProgressIndicator(
+              ),
+            );
+          }
+          return Form(
             key: _formKey,
             child: ListView(
-                padding: EdgeInsets.all(15.0),
-                children: <Widget>[
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
+              padding: EdgeInsets.all(15.0),
+              children: <Widget>[
+                TextFormField(
+                  controller: _emailController,
+                  maxLength: 24,
+                  decoration: InputDecoration(
                       hintText: 'E-mail'
-                    ),
-                    validator: (texto){
-                      if(texto.isEmpty)
-                        return "E-mail inválido!";
-                    },
                   ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  TextFormField(
-                    controller: _senhaController,
-                    obscureText: true,
-                    maxLength: 8,
-                    decoration: InputDecoration(
+                  validator: (texto){
+                    if(texto.isEmpty)
+                      return "E-mail inválido!";
+                  },
+                ),
+                SizedBox(
+                  height: 2.0,
+                ),
+                TextFormField(
+                  controller: _senhaController,
+                  obscureText: true,
+                  maxLength: 8,
+                  decoration: InputDecoration(
                       hintText: 'Senha'
-                    ),
-                    validator: (texto){
-                      if(texto.isEmpty)
-                        return "Senha inválida!";
-                    },
                   ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  TextFormField(
-                    controller: _nomeController,
-                    maxLength: 24,
-                    decoration: InputDecoration(
+                  validator: (texto){
+                    if(texto.isEmpty)
+                      return "Senha inválida!";
+                  },
+                ),
+                SizedBox(
+                  height: 2.0,
+                ),
+                TextFormField(
+                  controller: _nomeController,
+                  maxLength: 24,
+                  decoration: InputDecoration(
                       hintText: 'Nome Completo'
-                    ),
-                    validator: (texto){
-                      if(texto.isEmpty)
-                        return "Nome inválido!";
-                    },
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  RaisedButton(
+                  validator: (texto){
+                    if(texto.isEmpty)
+                      return "Nome inválido!";
+                  },
+                ),
+                SizedBox(
+                  height: 2.0,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0.0, 35.0, 0, 0),
+                  width: 358,
+                  height: 50,
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
                     child: Text("Criar",
                       style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
                       ),
                     ),
                     onPressed: (){
@@ -86,13 +102,16 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                           "senha" : _senhaController.text,
                           "email" : _emailController.text
                         };
-                        //model.registrarUsuario(usuarioDados, _onSucess, _onFail);
+                        model.registrarUsuario(usuarioDados, _onSucess, _onFail);
                       }
                     },
-                  )
-                ],
+                  ),
+                )
+              ],
             ),
-          ),
+          );
+        },
+      ),
     );
   }
 

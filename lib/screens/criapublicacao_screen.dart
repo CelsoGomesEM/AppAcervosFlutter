@@ -80,15 +80,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
         centerTitle: true,
       ),
       key: _scafoldKey,
-      body: ScopedModelDescendant<PublicacaoModel>(
-          builder: (context, child, model){
-
-            //Faz Algo diferente tem que pensar em algo pra colocar no contexto de edição ainda não sei
-            if(model.estaEditando){
-
-            }
-
-            return Form(
+      body: Form(
               key: _formKey,
               child: ListView(
                 padding: EdgeInsets.all(15.0),
@@ -238,7 +230,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                             "resumo" : _resumoController.text,
                             "documento": obtenhaBytesDoArquivoPdfSelecionado(),
                           };
-                          model.registrarPublicacao(dadosDaPublicacao, _onSucess, _onFail);
+                          //model.registrarPublicacao(dadosDaPublicacao, _onSucess, _onFail);
                         }
                         if(resultadoDialog){
                           resultadoDialog = await _ExibaDialogConfirmado(context);
@@ -253,10 +245,8 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                   ),
                 ],
               ),
-            );
-          }
-      ),
-    );
+            ),
+         );
   }
 
   Future _ExibaDialogoDeConfirmacao(BuildContext context) {

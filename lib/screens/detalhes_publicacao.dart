@@ -7,6 +7,7 @@ class DetalhesPublicacao extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Detalhes"),
+        centerTitle: true,
       ),
       body: Container(
         color: Colors.green,
