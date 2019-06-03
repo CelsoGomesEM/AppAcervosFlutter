@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pocflutterapp/models/publicacao_model.dart';
-import 'package:pocflutterapp/services/api_service.dart';
-import 'package:pocflutterapp/services/publicacao_service.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class CriaPublicacao extends StatefulWidget {
   @override
@@ -21,48 +19,38 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
   final _tituloController = TextEditingController();
   final _subtituloController = TextEditingController();
   final _palavrasChaveController = TextEditingController();
+  final _autoresController = TextEditingController();
   final _resumoController = TextEditingController();
   String _filePath;
 
-  void verifiqueOqueTemDentroDoArquivo() async{
+  Future<bool> existeDiretorioTemporarioDePublicacoes() async {
 
-    try{
+    bool existeDiretorioCriado = false;
 
-      /*File arquivo = new File(_filePath);
-      var contents = await arquivo.readAsBytes();
-      var localTemporario = await getExternalStorageDirectory();
-      final myImagePath = '${localTemporario.path}/AcervosPublicacoes' ;
-      final myImgDir = await new Directory(myImagePath).create();
-      File file = await new File('${myImgDir.path}/documentoTeste.pdf').create();
-      file.writeAsBytes(contents);
-      var listOfFiles = await myImgDir.list(recursive: true).toList();
+    var localTemporario = await getExternalStorageDirectory();
+    final localTemporarioAcervos = '${localTemporario.path}/PublicacoesDaily';
+    var diretorioAcervos = new Directory(localTemporarioAcervos);
 
-      print(contents);*/
+    diretorioAcervos.exists().then((existe){
+      existe ? existeDiretorioCriado = true : existe;
+    });
 
-      /*File arquivo = new File(_filePath);
+    return existeDiretorioCriado;
+  }
 
-      var arquivoEmBytes = await arquivo.readAsBytes();
+  Future<Directory> crieDiretorioTemporario() async {
+    var localDeArmazenamentoTemporario = await getExternalStorageDirectory();
+    final local = '${localDeArmazenamentoTemporario.path}/PublicacoesDaily' ;
+    final diretorioCriado = await new Directory(local).create();
+    return diretorioCriado;
+  }
 
-      var publicacao =  new PublicacaoModel();
-      publicacao.titulo = "Calendario 2018 Fitness";
-      publicacao.subtitulo = "Fitness";
-      publicacao.resumo = "Calendario 2018 Atividades Físicas";
-      publicacao.autores = "Luana Silva";
-      publicacao.documento = arquivoEmBytes;
-      publicacao.palavrachave = "Fit";
-      publicacao.discenteid = 23;
+  Future<Directory> crieLocalArmazenamentoPublicacoes() async {
+      var existeDiretorioCriado = await existeDiretorioTemporarioDePublicacoes();
 
-      var body = json.encode(publicacao);
-
-      var teste = await ApiService().post("http://192.168.1.7/RepositorioAcervosAPI/api/publicacao/registrarpublicacao", body);
-
-      var teste2 = "";*/
-
-      print("Cheguei Aqui");
-
-    }on PlatformException catch(e){
-      print("Error while reading file: " + e.toString());
-    }
+      if(!existeDiretorioCriado){
+        var diretorio = crieDiretorioTemporario();
+      }
   }
 
   void getFilePath() async {
@@ -92,158 +80,181 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
         centerTitle: true,
       ),
       key: _scafoldKey,
-      body: Form(
-          key: _formKey,
-          child: ListView(
-            padding: EdgeInsets.all(15.0),
-            children: <Widget>[
-              TextFormField(
-                controller: _tituloController,
-                decoration: InputDecoration(
-                    hintText: 'Título',
-                ),
-                maxLength: 250,
-                validator: (texto){
-                  if(texto.isEmpty)
-                    return "Título inválido!";
-                },
-              ),
-              SizedBox(
-                height: 2.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Subtítulo',
-                ),
-                maxLength: 250,
-                validator: (texto){
-                  if(texto.isEmpty)
-                    return "Subtítulo inválido!";
-                },
-              ),
-              SizedBox(
-                height: 2.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Palavras-chave',
-                ),
-                maxLength: 250,
-                validator: (texto){
-                  if(texto.isEmpty)
-                    return "Palavras-chave inválido!";
-                },
-              ),
-              SizedBox(
-                height: 2.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Autores',
-                ),
-                maxLength: 250,
-                validator: (texto){
-                  if(texto.isEmpty)
-                    return "Autores inválido!";
-                },
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                "Resumo: ",
-                style: TextStyle(
-                fontSize: 15,
-                ),
-                maxLines: 10,
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 7, 0, 0),
-                padding: EdgeInsets.only(bottom: 40.0),
-                height: 200,
-                child: TextField(
-                  maxLines: 50,
-                  decoration: InputDecoration(
-                    hintText: "Descreva um breve resumo da publicação",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Row(
+      body: ScopedModelDescendant<PublicacaoModel>(
+          builder: (context, child, model){
+
+            //Faz Algo diferente tem que pensar em algo pra colocar no contexto de edição ainda não sei
+            if(model.estaEditando){
+
+            }
+
+            return Form(
+              key: _formKey,
+              child: ListView(
+                padding: EdgeInsets.all(15.0),
                 children: <Widget>[
-                  Text(
-                    "File: ",
-                    style: TextStyle(
-                      fontSize: 15
+                  TextFormField(
+                    controller: _tituloController,
+                    decoration: InputDecoration(
+                      hintText: 'Título',
                     ),
+                    maxLength: 250,
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Título inválido!";
+                    },
                   ),
                   SizedBox(
-                    width: 10.0,
+                    height: 2.0,
+                  ),
+                  TextFormField(
+                    controller: _subtituloController,
+                    decoration: InputDecoration(
+                      hintText: 'Subtítulo',
+                    ),
+                    maxLength: 250,
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Subtítulo inválido!";
+                    },
+                  ),
+                  SizedBox(
+                    height: 2.0,
+                  ),
+                  TextFormField(
+                    controller: _palavrasChaveController,
+                    decoration: InputDecoration(
+                      hintText: 'Palavras-chave',
+                    ),
+                    maxLength: 250,
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Palavras-chave inválido!";
+                    },
+                  ),
+                  SizedBox(
+                    height: 2.0,
+                  ),
+                  TextFormField(
+                    controller: _autoresController,
+                    decoration: InputDecoration(
+                      hintText: 'Autores',
+                    ),
+                    maxLength: 250,
+                    validator: (texto){
+                      if(texto.isEmpty)
+                        return "Autores inválido!";
+                    },
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    "Resumo: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
                   ),
                   Container(
-                    width: 150,
-                    child: RaisedButton(
-                      onPressed: getFilePath,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "Upload",
-                            style: TextStyle(
-                              fontSize: 14.0
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          _filePath == null ? Icon(Icons.file_upload, size: 30,) : Icon(Icons.check, size: 30, color: Colors.green,),
-                        ],
+                    margin: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                    padding: EdgeInsets.only(bottom: 40.0),
+                    height: 200,
+                    child: TextField(
+                      controller: _resumoController,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        hintText: "Descreva um breve resumo da publicação",
+                        border: OutlineInputBorder(),
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 10.0,
+                    height: 10.0,
                   ),
-                  Text(
-                    "Extensões: .Pdf",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "File: ",
+                        style: TextStyle(
+                            fontSize: 15
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Container(
+                        width: 150,
+                        child: RaisedButton(
+                          onPressed: getFilePath,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "Upload",
+                                style: TextStyle(
+                                    fontSize: 14.0
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              _filePath == null ? Icon(Icons.file_upload, size: 30,) : Icon(Icons.check, size: 30, color: Colors.green,),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(
+                        "Extensões: .Pdf",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0.0, 50.0, 0, 0),
+                    width: 358,
+                    height: 50,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.lightBlue,
+                      child: Text("Salvar",
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      shape: RoundedRectangleBorder(),
+                      onPressed: () async {
+                        var resultadoDialog = await _ExibaDialogoDeConfirmacao(context);
+                        if(_formKey.currentState.validate()){
+                          Map<String, dynamic> dadosDaPublicacao = {
+                            "titulo" : _tituloController.text,
+                            "subtitulo" : _subtituloController.text,
+                            "palavrachave": _palavrasChaveController.text,
+                            "autores": _autoresController.text,
+                            "resumo" : _resumoController.text,
+                            "documento": obtenhaBytesDoArquivoPdfSelecionado(),
+                          };
+                          model.registrarPublicacao(dadosDaPublicacao, _onSucess, _onFail);
+                        }
+                        if(resultadoDialog){
+                          resultadoDialog = await _ExibaDialogConfirmado(context);
+                          if(resultadoDialog){
+                            //Limpe campos de input e pronto
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                      tooltip: "Salvar",
                     ),
                   ),
                 ],
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0.0, 50.0, 0, 0),
-                width: 358,
-                height: 50,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.lightBlue,
-                  child: Text("Salvar",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold
-                    ),),
-                  shape: RoundedRectangleBorder(),
-                  onPressed: () async {
-                      var resultadoDialog = await _ExibaDialogoDeConfirmacao(context);
-                      if(resultadoDialog){
-                        realizePublicacao();
-                        resultadoDialog = await _ExibaDialogConfirmado(context);
-                        if(resultadoDialog){
-                          //Limpe campos de input e pronto
-                          Navigator.pop(context);
-                        }
-                      }
-                  },
-                  tooltip: "Salvar",
-                ),
-              ),
-            ],
-          ),
+            );
+          }
       ),
     );
   }
@@ -297,7 +308,59 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
     );
   }
 
-  void realizePublicacao() {
+  _ExibaDialogoNaoFoiPossivelCriarRepositorioTemporario(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            "Não foi Possível criar repositório temporário, tente novamente!",
+          ),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
+  //Verificar se vai ser obrigatório o cara selecionar um arquivo pdf
+  Future<List<int>> obtenhaBytesDoArquivoPdfSelecionado()async {
+
+    File arquivo = new File(_filePath);
+
+    var arquivoEmBytes = await arquivo.readAsBytes();
+
+    return arquivoEmBytes;
+  }
+
+  void _onSucess(){
+    _scafoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(
+          "Publicacao criada com sucesso!",
+        ),
+          backgroundColor: Colors.lightBlue,
+          duration: Duration(seconds: 5),
+        )
+    );
+    Future.delayed(Duration(seconds: 3)).then((_){
+      Navigator.of(context).pop();
+    });
+  }
+
+  void _onFail(){
+    _scafoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(
+          "Falha ao criar publicação!",
+        ),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 5),
+        )
+    );
   }
 }

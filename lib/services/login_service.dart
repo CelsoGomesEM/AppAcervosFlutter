@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:pocflutterapp/models/discente_model.dart';
+import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/services/api_service.dart';
 
 
@@ -25,7 +25,7 @@ class LoginService {
     throw Exception(map['Mensagem']);
   }
 
-  Future<DiscenteModel> realizeLogin(Map<String, dynamic> usuarioDados) async {
+  Future<Discente> realizeLogin(Map<String, dynamic> usuarioDados) async {
 
     var api = ApiService();
 
@@ -40,7 +40,7 @@ class LoginService {
     var map = json.decode(result);
 
     if (map['codigo'] == 0) {
-      return DiscenteModel(
+      return Discente(
         id: map['result']['id'] as int,
         nome: map['result']['nome'] as String,
         email: map['result']['email'] as String

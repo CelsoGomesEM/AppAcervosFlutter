@@ -1,12 +1,12 @@
 import 'package:meta/meta.dart';
 
-class DiscenteModel {
+class Discente {
 
   final int id;
   final String nome;
   final String email;
 
-  DiscenteModel({@required this.id, @required this.nome, @required this.email});
+  Discente({@required this.id, @required this.nome, @required this.email});
 
   @override
   String toString() {

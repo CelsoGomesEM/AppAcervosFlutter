@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:pocflutterapp/models/discente_model.dart';
+import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/services/login_service.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class SessaoUsuarioModel extends Model{
 
   bool estaCarregando = false;
-  DiscenteModel discenteLogado;
+  Discente discenteLogado;
   Map<String, dynamic> usuarioDados;
 
   void registrarUsuario(Map<String, dynamic> usuarioDados, VoidCallback onSucess, VoidCallback onFail) async{

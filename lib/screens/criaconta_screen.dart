@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocflutterapp/models/discente_model.dart';
+import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -25,16 +25,7 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
         title: Text("Criar Conta"),
         centerTitle: true,
       ),
-      body: ScopedModelDescendant<SessaoUsuarioModel>(
-        builder: (context, child, model){
-
-          if(model.estaCarregando){
-            return Center(
-              child: CircularProgressIndicator(
-              ),
-            );
-          }
-          return Form(
+      body: Form(
             key: _formKey,
             child: ListView(
                 padding: EdgeInsets.all(15.0),
@@ -95,15 +86,13 @@ class _CriaContaScreenState extends State<CriaContaScreen> {
                           "senha" : _senhaController.text,
                           "email" : _emailController.text
                         };
-                        model.registrarUsuario(usuarioDados, _onSucess, _onFail);
+                        //model.registrarUsuario(usuarioDados, _onSucess, _onFail);
                       }
                     },
                   )
                 ],
             ),
-          );
-        },
-      ),
+          ),
     );
   }
 

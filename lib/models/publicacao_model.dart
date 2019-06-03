@@ -1,71 +1,32 @@
-import 'dart:typed_data';
+import 'package:pocflutterapp/dominio/publicacao.dart';
+import 'package:pocflutterapp/services/publicacao_service.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 
-import 'package:meta/meta.dart';
-import 'dart:convert' as convert;
+class PublicacaoModel extends Model{
 
-class ResultadoDoGet {
-  List<PublicacaoModel> results;
-  int codigo;
-  String mensagem;
+  bool estaEditando = false;
+  Publicacao publicacaoContexto;
+  Map<String, dynamic> dadosPublicacao;
 
-  ResultadoDoGet({this.results, this.codigo, this.mensagem});
+  void registrarPublicacao(Map<String, dynamic> dadosPublicacao, VoidCallback onSucess, VoidCallback onFail) async{
 
-  ResultadoDoGet.fromJson(Map<String, dynamic> json) {
-    if (json['result'] != null) {
-      results = new List<PublicacaoModel>();
-      json['result'].forEach((v) {
-        results.add(new PublicacaoModel.fromJson(v));
+    notifyListeners();
+
+    var publicacao = new Publicacao(id: null, titulo: null, subtitulo: null);
+
+    try{
+
+      var retorno = await PublicacaoService().registrePublicacao(publicacao);
+      onSucess();
+      notifyListeners();
+
+    }catch(erro){
+      Future.delayed(Duration(seconds: 5)).then((_){
+        onFail();
+        notifyListeners();
       });
     }
-    codigo = json['codigo'];
-    mensagem = json['mensagem'];
   }
-}
-
-class PublicacaoModel {
-
-  int id;
-  String titulo;
-  String subtitulo;
-  String resumo;
-  String autores;
-  String palavrachave;
-  Uint8List documento;
-  int discenteid;
-
-
-  PublicacaoModel({@required this.id, @required this.titulo, @required this.subtitulo});
-
-  PublicacaoModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    titulo = json['titulo'];
-    subtitulo = json['subtitulo'];
-    resumo = json['resumo'];
-    autores = json['autores'];
-    //documento = json['documento'].cast<int>().toList();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['titulo'] = this.titulo;
-    data['subtitulo'] = this.subtitulo;
-    data['resumo'] = this.resumo;
-    data['autores'] = this.autores;
-    data['documento'] = this.documento;
-    data['palavrachave'] = this.palavrachave;
-    data['discenteid'] = this.discenteid;
-    return data;
-  }
-
-
-@override
-  String toString() {
-    // TODO: implement toString
-    return "${this.titulo.toUpperCase()}";
-  }
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
-
 }

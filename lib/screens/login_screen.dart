@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocflutterapp/models/discente_model.dart';
+import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:pocflutterapp/screens/criaconta_screen.dart';
 import 'package:pocflutterapp/screens/home_screen.dart';

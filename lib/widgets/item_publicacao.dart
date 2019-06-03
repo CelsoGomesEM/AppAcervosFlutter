@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pocflutterapp/models/publicacao_model.dart';
+import 'package:pocflutterapp/dominio/publicacao.dart';
 import 'package:meta/meta.dart';
 import 'package:pocflutterapp/screens/detalhes_publicacao.dart';
 
 class ItemPublicacao extends StatelessWidget {
 
-  final PublicacaoModel publicacao;
+  final Publicacao publicacao;
 
   ItemPublicacao({@required this.publicacao});
 
