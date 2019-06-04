@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pocflutterapp/dominio/discente.dart';
+import 'package:pocflutterapp/dominio/publicacao.dart';
 import 'package:pocflutterapp/services/publicacao_service.dart';
 import 'package:meta/meta.dart';
 
@@ -233,24 +234,30 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                         ),),
                       shape: RoundedRectangleBorder(),
                       onPressed: () async {
-                        var resultadoDialog = await _ExibaDialogoDeConfirmacao(context);
                         if(_formKey.currentState.validate()){
-                          Map<String, dynamic> dadosDaPublicacao = {
-                            "titulo" : _tituloController.text,
-                            "subtitulo" : _subtituloController.text,
-                            "palavrachave": _palavrasChaveController.text,
-                            "autores": _autoresController.text,
-                            "resumo" : _resumoController.text,
-                            "documento": obtenhaBytesDoArquivoPdfSelecionado(),
-                            "discenteid": DiscenteLogado.id,
-                          };
-                          PublicacaoService().registrePublicacao(dadosDaPublicacao, _onSucess,  _onFail);
-                        }
-                        if(resultadoDialog){
-                          resultadoDialog = await _ExibaDialogConfirmado(context);
-                          if(resultadoDialog){
-                            //Limpe campos de input e pronto
-                            Navigator.pop(context);
+                          var resultadoDialog = await _ExibaDialogoDeConfirmacao(context);
+
+                          if(resultadoDialog == true){
+
+                            File arquivo = new File(_filePath);
+                            var arquivoEmBytes = await arquivo.readAsBytes();
+
+                            var publicacao = new Publicacao();
+                            publicacao.titulo = _tituloController.text;
+                            publicacao.subtitulo = _subtituloController.text;
+                            publicacao.palavrachave = _palavrasChaveController.text;
+                            publicacao.resumo = _resumoController.text;
+                            publicacao.autores = _autoresController.text;
+                            publicacao.discenteid = DiscenteLogado.id;
+                            publicacao.documento = arquivoEmBytes;
+
+                            PublicacaoService().registrePublicacao(publicacao);
+
+                            resultadoDialog = await _ExibaDialogConfirmado(context);
+                            if(resultadoDialog == true){
+                              //Limpe campos de input e pronto
+                              Navigator.pop(context);
+                            }
                           }
                         }
                       },
@@ -330,41 +337,6 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
           ],
         );
       },
-    );
-  }
-
-  //Verificar se vai ser obrigatório o cara selecionar um arquivo pdf
-  Future<List<int>> obtenhaBytesDoArquivoPdfSelecionado()async {
-
-    File arquivo = new File(_filePath);
-
-    var arquivoEmBytes = await arquivo.readAsBytes();
-
-    return arquivoEmBytes;
-  }
-
-  void _onSucess(){
-    _scafoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(
-          "Publicacao criada com sucesso!",
-        ),
-          backgroundColor: Colors.lightBlue,
-          duration: Duration(seconds: 5),
-        )
-    );
-    Future.delayed(Duration(seconds: 3)).then((_){
-      Navigator.of(context).pop();
-    });
-  }
-
-  void _onFail(){
-    _scafoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(
-          "Falha ao criar publicação!",
-        ),
-          backgroundColor: Colors.redAccent,
-          duration: Duration(seconds: 5),
-        )
     );
   }
 }
