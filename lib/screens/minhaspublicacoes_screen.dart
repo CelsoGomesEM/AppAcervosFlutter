@@ -17,6 +17,7 @@ class MinhasPublicacoes extends StatefulWidget {
 class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
 
   final _scafoldKey = GlobalKey<ScaffoldState>();
+  List<Publicacao> _publicacoes;
 
   @override
   Widget build(BuildContext context) {
@@ -92,15 +93,21 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
   }
 
   Widget _CreateListViewBuilder(BuildContext context, AsyncSnapshot snapshot){
-    List<Publicacao> publicacoes = snapshot.data;
+    _publicacoes = snapshot.data;
     return new ListView.builder(
         padding: EdgeInsets.all(4.0),
-        itemCount: publicacoes.length,
+        itemCount: _publicacoes.length,
         itemBuilder:(BuildContext context, int index){
-          return ItemPublicacao(publicacao: publicacoes[index],);
+          return ItemPublicacao(publicacao: _publicacoes[index], deleteItem: removeItem(index));
         },
     );
+  }
 
+  removeItem(int index) {
+    setState(() {
+      _publicacoes = List.from(_publicacoes)
+        ..removeAt(index);
+    });
   }
 }
 

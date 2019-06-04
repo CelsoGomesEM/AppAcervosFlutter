@@ -6,8 +6,9 @@ import 'package:pocflutterapp/screens/detalhes_publicacao.dart';
 class ItemPublicacao extends StatelessWidget {
 
   final Publicacao publicacao;
+  final VoidCallback deleteItem;
 
-  ItemPublicacao({@required this.publicacao});
+  ItemPublicacao({@required this.publicacao, @required this.deleteItem});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,9 @@ class ItemPublicacao extends StatelessWidget {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => DetalhesPublicacao()));
         },
+        onLongPress: (){
+          deleteItem;
+        } ,
         child: Card(
           child: Container(
             padding: EdgeInsets.all(8.0),
@@ -64,6 +68,34 @@ class ItemPublicacao extends StatelessWidget {
             ),
           )
         ),
+    );
+  }
+
+  Future _ExibaDialogoDeConfirmacao(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmação"),
+          content: Text(
+            "Deseja remover publicacao?",
+          ),
+          actions: [
+            FlatButton(
+              child: Text("NÃO"),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            FlatButton(
+              child: Text("SIM"),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
