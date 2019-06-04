@@ -268,6 +268,7 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
               ),
             ),
          );
+      }
   }
 
   Future _ExibaDialogoDeConfirmacao(BuildContext context) {
@@ -339,4 +340,4 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
       },
     );
   }
-}
+

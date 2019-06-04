@@ -25,39 +25,20 @@ class PublicacaoService {
     return resultado.results;
   }
 
-  Future<bool> registrePublicacao(Publicacao publicacao) async{
-
-    bool registrou;
+  void registrePublicacao(Publicacao publicacao) async{
 
     try{
-
       var body = MapeieJsonPublicacao(publicacao);
       var api = ApiService();
-      await api.post("http://192.168.1.8/RepositorioAcervosAPI/api/publicacao/registrarpublicacao", body);
+      await api.post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", body);
 
-      registrou = true;
     }catch(erro){
-        registrou = false;
-    }
 
-    return registrou;
+    }
   }
 
   String MapeieJsonPublicacao(Publicacao publicacao){
     return json.encode(publicacao);
   }
-
-  /*String mapeieDadosPublicacao(Map<String, dynamic> dadosPublicacao){
-
-    var publicacao = new Publicacao();
-    publicacao.titulo = dadosPublicacao['titulo'];
-    publicacao.subtitulo = dadosPublicacao['subtitulo'];
-    publicacao.palavrachave = dadosPublicacao['palavrachave'];
-    publicacao.autores = dadosPublicacao['autores'];
-    publicacao.resumo = dadosPublicacao['resumo'];
-    publicacao.documento = dadosPublicacao['documento'];
-    publicacao.discenteid = dadosPublicacao['discenteid'];
-    return json.encode(publicacao);
-  }*/
 
 }
