@@ -37,6 +37,18 @@ class PublicacaoService {
     }
   }
 
+  void deletePublicacao(Publicacao publicacao) async{
+    try{
+      
+      var body = MapeieJsonPublicacao(publicacao);
+      var api = ApiService();
+      await api.post("https://repositorioapi.herokuapp.com/api/publicacao/deletepublicacaopeloid", body);
+
+    }catch(erro){
+
+    }
+  }
+
   String MapeieJsonPublicacao(Publicacao publicacao){
     return json.encode(publicacao);
   }

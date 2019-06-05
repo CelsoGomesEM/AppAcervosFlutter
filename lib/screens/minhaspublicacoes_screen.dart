@@ -98,16 +98,11 @@ class _MinhasPublicacoesState extends State<MinhasPublicacoes> {
         padding: EdgeInsets.all(4.0),
         itemCount: _publicacoes.length,
         itemBuilder:(BuildContext context, int index){
-          return ItemPublicacao(publicacao: _publicacoes[index], deleteItem: removeItem(index));
+          return ItemPublicacao(publicacao: _publicacoes[index]);
         },
     );
   }
 
-  removeItem(int index) {
-    setState(() {
-      _publicacoes = List.from(_publicacoes)
-        ..removeAt(index);
-    });
-  }
+
 }
 
