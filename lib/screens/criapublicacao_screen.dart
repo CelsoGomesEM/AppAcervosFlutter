@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/dominio/publicacao.dart';
+import 'package:pocflutterapp/models/minhas_publicacoes_model.dart';
+import 'package:pocflutterapp/screens/publicacoes_usuario.dart';
 import 'package:pocflutterapp/services/publicacao_service.dart';
 import 'package:meta/meta.dart';
 
@@ -252,11 +254,11 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                             publicacao.documento = arquivoEmBytes;
 
                             PublicacaoService().registrePublicacao(publicacao);
+                            MinhasPublicacoesModel.of(context).adicioneNovaPublicacao(publicacao);
 
                             resultadoDialog = await _ExibaDialogConfirmado(context);
                             if(resultadoDialog == true){
-                              //Limpe campos de input e pronto
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             }
                           }
                         }

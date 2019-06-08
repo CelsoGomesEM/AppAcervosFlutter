@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pocflutterapp/dominio/publicacao.dart';
 import 'package:meta/meta.dart';
+import 'package:pocflutterapp/models/minhas_publicacoes_model.dart';
 import 'package:pocflutterapp/screens/detalhes_publicacao.dart';
 
 class ItemPublicacao extends StatelessWidget {
 
   final Publicacao publicacao;
 
-  ItemPublicacao({@required this.publicacao});
+  ItemPublicacao(this.publicacao);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +17,16 @@ class ItemPublicacao extends StatelessWidget {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => DetalhesPublicacao()));
         },
-        onLongPress: (){
-          _ExibaDialogoDeConfirmacao(context);
+        onLongPress: () async {
+          var resultado = await _ExibaDialogoDeConfirmacao(context);
+
+          if(resultado == true){
+            MinhasPublicacoesModel.of(context).removaPublicacao(publicacao);
+          }
         },
         child: Card(
           child: Container(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(11.0),
             height: 230.0,
             color: Color.fromRGBO(104, 222, 202, 1),
             child: Row(

@@ -40,13 +40,17 @@ class Publicacao {
     id = json['id'];
     titulo = json['titulo'];
     subtitulo = json['subtitulo'];
+    palavrachave = json['palavrachave'];
     resumo = json['resumo'];
     autores = json['autores'];
-    //documento = json['documento'].cast<int>().toList();
+    discenteid = json['discenteid'];
+    var documentoPdf = convert.base64Decode(json['documento']);
+    documento = json['documento'] == null ? null : documentoPdf;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['titulo'] = this.titulo;
     data['subtitulo'] = this.subtitulo;
     data['resumo'] = this.resumo;
