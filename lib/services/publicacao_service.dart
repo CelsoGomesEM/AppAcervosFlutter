@@ -27,33 +27,18 @@ class PublicacaoService {
 
   Future<int> registrePublicacao(Publicacao publicacao) async{
 
-    int codigoPublicacao;
-
-    try{
-
-      var body = MapeieJsonPublicacao(publicacao);
-      var api = ApiService();
-      var response = await api.post("https://repositorioapi.herokuapp.com/api/publicacao/registrarpublicacao", body);
-      var map = json.decode(response);
-      codigoPublicacao = ResultadoDoGet.fromJson(map).results.first.id;
-
-    }catch(erro){
-
-    }
-
-    return codigoPublicacao;
+    var body = MapeieJsonPublicacao(publicacao);
+    var api = ApiService();
+    var response = await api.post("http://192.168.1.4/RepositorioAcervosAPI/api/publicacao/registrarpublicacao", body);
+    var map = json.decode(response);
+    return map['result']['id'];
   }
 
-  Future deletePublicacao(Publicacao publicacao) async{
+  void deletePublicacao(Publicacao publicacao) async{
 
-    try{
-      
-      var body = MapeieJsonPublicacao(publicacao);
-      var api = ApiService();
-      await api.post("http://192.168.1.4/RepositorioAcervosAPI/api/publicacao/deletepublicacaopeloid", body);
-    }catch(erro){
-
-    }
+    var body = MapeieJsonPublicacao(publicacao);
+    var api = ApiService();
+    await api.post("http://192.168.1.4/RepositorioAcervosAPI/api/publicacao/deletepublicacaopeloid", body);
   }
 
   String MapeieJsonPublicacao(Publicacao publicacao){

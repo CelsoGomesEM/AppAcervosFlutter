@@ -18,18 +18,15 @@ class MinhasPublicacoesModel extends Model{
   static MinhasPublicacoesModel of(BuildContext context) =>
       ScopedModel.of<MinhasPublicacoesModel>(context);
 
-  void adicioneNovaPublicacao(Publicacao publicacao){
+  void adicioneNovaPublicacao(Publicacao publicacao) async{
 
     var servicoPublicacao = new PublicacaoService();
 
     try{
 
-      servicoPublicacao.registrePublicacao(publicacao).then((pub){
-        publicacao.id = pub;
-      });
-
+      var resultado = await servicoPublicacao.registrePublicacao(publicacao);
+      publicacao.id = resultado;
       publicacoesDoUsuario.add(publicacao);
-
       notifyListeners();
 
     }catch(erro){
@@ -39,13 +36,14 @@ class MinhasPublicacoesModel extends Model{
   }
 
   void removaPublicacao(Publicacao publicacao) async {
+
     var servicoPublicacao = new PublicacaoService();
 
     try{
 
      await servicoPublicacao.deletePublicacao(publicacao);
-
      publicacoesDoUsuario.remove(publicacao);
+     notifyListeners();
 
     }catch(erro){
       //Fazer Algo em caso de erro
@@ -55,9 +53,7 @@ class MinhasPublicacoesModel extends Model{
   void carregueTodasPublicacoesDoUsuario() async{
 
     var servicoDePublicacao = PublicacaoService();
-
     publicacoesDoUsuario = await servicoDePublicacao.obtenhaPublicacoesDoUsuario(usuarioLogado.discenteLogado.id);
-
     notifyListeners();
   }
 }

@@ -253,7 +253,6 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                             publicacao.discenteid = DiscenteLogado.id;
                             publicacao.documento = arquivoEmBytes;
 
-                            PublicacaoService().registrePublicacao(publicacao);
                             MinhasPublicacoesModel.of(context).adicioneNovaPublicacao(publicacao);
 
                             resultadoDialog = await _ExibaDialogConfirmado(context);
