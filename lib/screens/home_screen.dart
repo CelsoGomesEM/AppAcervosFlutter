@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocflutterapp/screens/minhaspublicacoes_screen.dart';
+import 'package:pocflutterapp/screens/publicacoes_repositorio.dart';
 import 'package:pocflutterapp/screens/publicacoes_screen.dart';
 import 'package:pocflutterapp/screens/publicacoes_usuario.dart';
 import 'package:pocflutterapp/widgets/drawer_customizado.dart';
@@ -29,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             centerTitle: true,
           ),
           drawer: DrawerCustomizado(_pageController),
-          body: PublicacaoScreen(),
+          body: PublicacoesRepositorio(),
         ),
         Scaffold(
           appBar: AppBar(

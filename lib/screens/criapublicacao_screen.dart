@@ -253,12 +253,8 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
                             publicacao.discenteid = DiscenteLogado.id;
                             publicacao.documento = arquivoEmBytes;
 
-                            MinhasPublicacoesModel.of(context).adicioneNovaPublicacao(publicacao);
+                            MinhasPublicacoesModel.of(context).adicioneNovaPublicacao(publicacao, _onSucess, _onFail);
 
-                            resultadoDialog = await _ExibaDialogConfirmado(context);
-                            if(resultadoDialog == true){
-                              Navigator.of(context).pop();
-                            }
                           }
                         }
                       },
@@ -270,7 +266,21 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
             ),
          );
       }
+
+  void _onSucess() async{
+    var resultadoDialog = await _ExibaDialogPublicacaoComSucesso(context);
+    if(resultadoDialog == true){
+      Navigator.of(context).pop();
+    }
   }
+
+  void _onFail() async{
+    var resultadoDialog = await _ExibaDialogPublicacaoComFalha(context);
+    if(resultadoDialog == true){
+
+    }
+  }
+}
 
   Future _ExibaDialogoDeConfirmacao(BuildContext context) {
     return showDialog(
@@ -300,7 +310,30 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
     );
   }
 
-  _ExibaDialogConfirmado(BuildContext context) {
+  _ExibaDialogPublicacaoComFalha(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text(
+              "Houve uma falha ao criar a publicação!",
+            ),
+            actions: [
+              Center(
+                child: FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+  _ExibaDialogPublicacaoComSucesso(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {

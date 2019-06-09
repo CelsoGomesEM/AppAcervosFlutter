@@ -1,19 +1,17 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:pocflutterapp/dominio/publicacao.dart';
 import 'package:pocflutterapp/services/api_service.dart';
 import 'dart:async';
-
 
 class PublicacaoService {
 
   Future<List<Publicacao>> obtenhaTodasPublicacoesDoRepositorio() async {
 
     var api = new ApiService();
-
-    List<Publicacao> listaDePublicacoes = new List<Publicacao>();
-
-    return listaDePublicacoes;
+    var result = await api.get("http://192.168.1.4/RepositorioAcervosAPI/api/publicacao/obtenhatodaspublicacoesrepositorio");
+    var map = json.decode(result);
+    var resultado = ResultadoDoGet.fromJson(map);
+    return resultado.results;
   }
 
   Future<List<Publicacao>> obtenhaPublicacoesDoUsuario(int idUsuario) async {

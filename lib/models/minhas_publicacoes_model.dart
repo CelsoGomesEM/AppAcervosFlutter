@@ -18,7 +18,7 @@ class MinhasPublicacoesModel extends Model{
   static MinhasPublicacoesModel of(BuildContext context) =>
       ScopedModel.of<MinhasPublicacoesModel>(context);
 
-  void adicioneNovaPublicacao(Publicacao publicacao) async{
+  void adicioneNovaPublicacao(Publicacao publicacao, VoidCallback onSucess, VoidCallback onFail) async{
 
     var servicoPublicacao = new PublicacaoService();
 
@@ -27,11 +27,12 @@ class MinhasPublicacoesModel extends Model{
       var resultado = await servicoPublicacao.registrePublicacao(publicacao);
       publicacao.id = resultado;
       publicacoesDoUsuario.add(publicacao);
+      onSucess();
       notifyListeners();
 
     }catch(erro){
       //Fazer Algo em caso de erro
-
+      onFail();
     }
   }
 
