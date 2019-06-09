@@ -283,31 +283,31 @@ class _CriaPublicacaoState extends State<CriaPublicacao> {
 }
 
   Future _ExibaDialogoDeConfirmacao(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Confirmação"),
-          content: Text(
-            "Deseja salvar publicação?",
-          ),
-          actions: [
-            FlatButton(
-              child: Text("NÃO"),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmação"),
+            content: Text(
+              "Deseja salvar publicação?",
             ),
-            FlatButton(
-              child: Text("SIM"),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        );
-      },
-    );
+            actions: [
+              FlatButton(
+                child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              FlatButton(
+                child: Text("SIM"),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              ),
+            ],
+          );
+        },
+      );
   }
 
   _ExibaDialogPublicacaoComFalha(BuildContext context) {
