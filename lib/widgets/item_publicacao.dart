@@ -47,7 +47,6 @@ class ItemPublicacao extends StatelessWidget {
                         ),
                         Text(publicacao.subtitulo,
                           style: TextStyle(
-                              color: Colors.grey,
                               fontSize: 12.0),
                         ),
                          SizedBox(
