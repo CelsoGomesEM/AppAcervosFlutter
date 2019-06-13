@@ -5,8 +5,6 @@ import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:pocflutterapp/screens/criapublicacao_screen.dart';
 import 'package:pocflutterapp/services/publicacao_service.dart';
 import 'dart:async';
-
-import 'package:pocflutterapp/widgets/item_publicacao.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class MinhasPublicacoes extends StatefulWidget {

@@ -15,7 +15,7 @@ class ItemPublicacao extends StatelessWidget {
     return InkWell(
         onTap: (){
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DetalhesPublicacao()));
+              MaterialPageRoute(builder: (context) => DetalhesPublicacao(publicacao)));
         },
         onLongPress: () async {
           var resultado = await _ExibaDialogoDeConfirmacao(context);

@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModel<SessaoUsuarioModel>(
-      //Tudo que estiver no escopo do model ter acesso ao model para realizar atualizações no app
       model: SessaoUsuarioModel(),
       child: ScopedModelDescendant<SessaoUsuarioModel>(
           builder: (context, child, model){

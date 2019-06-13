@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pocflutterapp/dominio/discente.dart';
 import 'package:pocflutterapp/models/sessao_usuario_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
